@@ -1,6 +1,7 @@
 import { getAllSpells, getSpellDetails } from "./api";
 import { useState, useEffect } from "react";
 import Pagination from "./Pagination";
+import SpellCard from "./SpellCard";
 
 export default function Spells() {
   const [spells, setSpells] = useState([]);
@@ -61,11 +62,7 @@ export default function Spells() {
       <div>
         {selectedSpell && (
           <div>
-            <p>{selectedSpell.name}</p>
-            <p>{selectedSpell.range}</p>
-            <p>{selectedSpell.level}</p>
-            <p>{selectedSpell.desc?.join(" ")}</p>
-            <button onClick={() => closeSpellDetails()}>Close</button>
+            <SpellCard spell={selectedSpell} />
           </div>
         )}
       </div>
