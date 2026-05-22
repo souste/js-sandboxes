@@ -1,10 +1,13 @@
 import { getAllSpells, getSpellDetails } from "./api";
 import { useState, useEffect } from "react";
+import Pagination from "./Pagination";
 
 export default function Spells() {
   const [spells, setSpells] = useState([]);
   const [selectedSpell, setSelectedSpell] = useState(null);
   const [searchValue, setSearchValue] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const [spellsPerPage, setSpellsPerPage] = useState(12);
 
   useEffect(() => {
     const fetchSpells = async () => {
@@ -29,6 +32,10 @@ export default function Spells() {
     setSearchValue(e.target.value);
   };
 
+  const lastSpellsIndex = currentPage * spellsPerPage;
+  const firstSpellIndex = lastSpellsIndex - spellsPerPage;
+  const currentSpells = spells.slice(firstSpellIndex, lastSpellsIndex);
+
   return (
     <div className="search-container">
       <label>Search for your favourite spells here</label>
@@ -40,7 +47,7 @@ export default function Spells() {
       />
       <p>Current Value: {searchValue}</p>
       <ul>
-        {spells
+        {currentSpells
           .filter((spell) =>
             spell.name.toLowerCase().includes(searchValue.toLowerCase()),
           )
@@ -66,6 +73,12 @@ export default function Spells() {
           </div>
         )}
       </div>
+      <Pagination
+        totalSpells={spells.length}
+        spellsPerPage={spellsPerPage}
+        setCurrentPage={setCurrentPage}
+        spells={spells}
+      />
     </div>
   );
 }
