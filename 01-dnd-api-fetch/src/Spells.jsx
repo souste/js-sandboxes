@@ -32,9 +32,13 @@ export default function Spells() {
     setSearchValue(e.target.value);
   };
 
+  const filteredSpells = spells.filter((spell) =>
+    spell.name.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
   const lastSpellsIndex = currentPage * spellsPerPage;
   const firstSpellIndex = lastSpellsIndex - spellsPerPage;
-  const currentSpells = spells.slice(firstSpellIndex, lastSpellsIndex);
+  const currentSpells = filteredSpells.slice(firstSpellIndex, lastSpellsIndex);
 
   return (
     <div className="search-container">
@@ -47,19 +51,11 @@ export default function Spells() {
       />
       <p>Current Value: {searchValue}</p>
       <ul>
-        {currentSpells
-          .filter((spell) =>
-            spell.name.toLowerCase().includes(searchValue.toLowerCase()),
-          )
-          .slice(0, 100)
-          .map((spell) => (
-            <li
-              onClick={() => generateSpellDetails(spell.url)}
-              key={spell.index}
-            >
-              {spell.name}
-            </li>
-          ))}
+        {currentSpells.map((spell) => (
+          <li onClick={() => generateSpellDetails(spell.url)} key={spell.index}>
+            {spell.name}
+          </li>
+        ))}
       </ul>
 
       <div>
@@ -74,7 +70,7 @@ export default function Spells() {
         )}
       </div>
       <Pagination
-        totalSpells={spells.length}
+        totalSpells={filteredSpells.length}
         spellsPerPage={spellsPerPage}
         setCurrentPage={setCurrentPage}
         spells={spells}
