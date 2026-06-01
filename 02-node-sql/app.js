@@ -1,7 +1,9 @@
 require("dotenv").config();
 
 const express = require("express");
+const pool = require("./src/db/pool");
 const app = express();
+app.use(express.json());
 
 app.get("/", (req, res) => res.json({ message: "Hello to the SQL sandbox" }));
 
