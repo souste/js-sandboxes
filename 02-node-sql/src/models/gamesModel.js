@@ -33,9 +33,34 @@ async function deleteGamesModel(id) {
   return result.rows[0];
 }
 
+async function getGamesByDevelopersModel() {
+  const result = await pool.query(
+    `SELECT d.name, g.title
+         FROM developers d
+         LEFT JOIN games g
+         ON d.id = g.developer_id`,
+  );
+  return result.rows;
+}
+
+async function getDevelopersGamesAndHeroesModel() {
+  const result = await pool.query(
+    `SELECT d.name AS developer_name, g.title AS game_title, h.name AS hero_name
+        FROM developers d
+        LEFT JOIN games g
+        on d.id = g.developer_id
+        LEFT JOIN heroes h
+        ON g.id = h.game_id`,
+  );
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
   updateGamesModel,
   deleteGamesModel,
+  getGamesByDevelopersModel,
+  getDevelopersGamesAndHeroesModel,
 };

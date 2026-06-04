@@ -3,6 +3,8 @@ const {
   createGamesModel,
   updateGamesModel,
   deleteGamesModel,
+  getGamesByDevelopersModel,
+  getDevelopersGamesAndHeroesModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -108,9 +110,47 @@ const deleteGamesController = async (req, res) => {
   }
 };
 
+const getGamesByDevelopersController = async (req, res) => {
+  try {
+    const result = await getGamesByDevelopersModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Games and Developers retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const getDevelopersGamesAndHeroesController = async (req, res) => {
+  try {
+    const result = await getDevelopersGamesAndHeroesModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Heroes, Games and Developers retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
   updateGamesController,
   deleteGamesController,
+  getGamesByDevelopersController,
+  getDevelopersGamesAndHeroesController,
 };
