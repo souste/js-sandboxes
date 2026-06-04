@@ -1,0 +1,116 @@
+const {
+  getGamesModel,
+  createGamesModel,
+  updateGamesModel,
+  deleteGamesModel,
+} = require("../models/gamesModel");
+
+const getGamesController = async (req, res) => {
+  try {
+    const games = await getGamesModel();
+
+    res.status(200).json({
+      success: true,
+      data: games,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const createGamesController = async (req, res) => {
+  try {
+    const { title, developer_id } = req.body;
+
+    if (!title || !developer_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Games require a title and developer id",
+      });
+    }
+    const created = await createGamesModel(title, developer_id);
+
+    res.status(201).json({
+      success: true,
+      data: created,
+      message: "Game created successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const updateGamesController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const { title, developer_id } = req.body;
+
+    if (!title || !developer_id) {
+      return res.status(400).json({
+        success: false,
+        message: "Games require a title and developer id",
+      });
+    }
+    const updated = await updateGamesModel(title, developer_id, id);
+
+    if (!updated) {
+      return res.status(404).json({
+        success: false,
+        message: "Game not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updated,
+      message: "Game successfully updated",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const deleteGamesController = async (req, res) => {
+  try {
+    const id = req.params.id;
+    const deleted = await deleteGamesModel(id);
+    console.log("deleted", deleted);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: "Game not found",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: "Game deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+module.exports = {
+  getGamesController,
+  createGamesController,
+  updateGamesController,
+  deleteGamesController,
+};
