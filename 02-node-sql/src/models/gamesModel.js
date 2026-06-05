@@ -85,6 +85,18 @@ async function getTotalCharacterCensusModel() {
   return result.rows;
 }
 
+async function getTotalGameScoreModel() {
+  const result = await pool.query(
+    `SELECT title, s.metascore, s.userscore, 
+     (COALESCE(s.metascore, 0) + (COALESCE(s.userscore, 0) * 10))::INTEGER AS total_score, 
+     ROUND((COALESCE(s.metascore, 0) + (COALESCE(s.userscore, 0) * 10)) / 2) AS average_score
+     FROM games g
+     LEFT JOIN scores s ON g.id = s.game_id`,
+  );
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -94,4 +106,5 @@ module.exports = {
   getDevelopersGamesAndHeroesModel,
   getDevelopersWithNoGamesModel,
   getTotalCharacterCensusModel,
+  getTotalGameScoreModel,
 };

@@ -7,6 +7,7 @@ const {
   getDevelopersGamesAndHeroesModel,
   getDevelopersWithNoGamesModel,
   getTotalCharacterCensusModel,
+  getTotalGameScoreModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -200,6 +201,27 @@ const getTotalCharacterCensusController = async (req, res) => {
   }
 };
 
+const getTotalGameScoreController = async (red, res) => {
+  try {
+    const result = await getTotalGameScoreModel();
+
+    if (!result) {
+      throw new Error("Invalid response from the database");
+    }
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Games and total scores retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -209,4 +231,5 @@ module.exports = {
   getDevelopersGamesAndHeroesController,
   getDevelopersWithNoGamesController,
   getTotalCharacterCensusController,
+  getTotalGameScoreController,
 };
