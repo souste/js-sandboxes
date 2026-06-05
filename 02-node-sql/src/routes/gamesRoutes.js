@@ -11,6 +11,8 @@ const {
   getDevelopersWithNoGamesController,
   getTotalCharacterCensusController,
   getTotalGameScoreController,
+  getGamesByPlatformController,
+  getGamesWithoutScoresController,
 } = require("../controllers/gamesController");
 
 router.get("/", getGamesController);
@@ -19,8 +21,11 @@ router.get("/heroes", getDevelopersGamesAndHeroesController);
 router.get("/nogames", getDevelopersWithNoGamesController);
 router.get("/charactercensus", getTotalCharacterCensusController);
 router.get("/totalscores", getTotalGameScoreController);
+router.get("/noscores", getGamesWithoutScoresController);
 
 router.post("/", createGamesController);
+router.post("/platform", getGamesByPlatformController);
+
 router.patch("/:id", updateGamesController);
 router.patch("/:id", updateGamesController);
 router.delete("/:id", deleteGamesController);

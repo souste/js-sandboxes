@@ -97,6 +97,31 @@ async function getTotalGameScoreModel() {
   return result.rows;
 }
 
+async function getGamesByPlatformModel(platform) {
+  const result = await pool.query(
+    `SELECT g.title, p.name AS platform
+   FROM game_platforms gp
+   JOIN platforms p ON gp.platform_id = p.id
+   JOIN games g ON gp.game_id = g.id
+   WHERE p.name = $1
+   ORDER BY g.title ASC
+  `,
+    [platform],
+  );
+  return result.rows;
+}
+
+async function getGamesWithoutScoresModel() {
+  const result = await pool.query(
+    `SELECT g.title, s.metascore, s.userscore
+    FROM games g
+    JOIN scores s ON g.id = s.game_id
+    WHERE s.metascore IS NULL OR s.userscore IS NULL`,
+  );
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -107,4 +132,6 @@ module.exports = {
   getDevelopersWithNoGamesModel,
   getTotalCharacterCensusModel,
   getTotalGameScoreModel,
+  getGamesByPlatformModel,
+  getGamesWithoutScoresModel,
 };

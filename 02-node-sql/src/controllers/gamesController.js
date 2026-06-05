@@ -8,6 +8,8 @@ const {
   getDevelopersWithNoGamesModel,
   getTotalCharacterCensusModel,
   getTotalGameScoreModel,
+  getGamesByPlatformModel,
+  getGamesWithoutScoresModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -222,6 +224,49 @@ const getTotalGameScoreController = async (red, res) => {
   }
 };
 
+const getGamesByPlatformController = async (req, res) => {
+  try {
+    const { platform } = req.body;
+    const result = await getGamesByPlatformModel(platform);
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: `${platform} games retrieved successfully`,
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const getGamesWithoutScoresController = async (req, res) => {
+  try {
+    const result = await getGamesWithoutScoresModel();
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No game found without scores",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Games without scores retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -232,4 +277,6 @@ module.exports = {
   getDevelopersWithNoGamesController,
   getTotalCharacterCensusController,
   getTotalGameScoreController,
+  getGamesByPlatformController,
+  getGamesWithoutScoresController,
 };
