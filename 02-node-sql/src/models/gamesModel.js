@@ -122,6 +122,30 @@ async function getGamesWithoutScoresModel() {
   return result.rows;
 }
 
+async function getTopFiveGamesModel() {
+  const result = await pool.query(
+    `SELECT title, ROUND((COALESCE(s.metascore, 0) + (COALESCE(s.userscore, 0) * 10)) / 2) AS average_score
+    FROM games g
+    LEFT JOIN scores s on g.id = game_id
+    ORDER BY average_score DESC
+    LIMIT 5`,
+  );
+
+  return result.rows;
+}
+
+async function getLowestFiveGamesModel() {
+  const result = await pool.query(
+    `SELECT title, ROUND((COALESCE(s.metascore, 0) + (COALESCE(s.userscore, 0) * 10)) / 2) AS average_score
+    FROM games g
+    LEFT JOIN scores s on g.id = game_id
+    ORDER BY average_score ASC
+    LIMIT 5`,
+  );
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -134,4 +158,6 @@ module.exports = {
   getTotalGameScoreModel,
   getGamesByPlatformModel,
   getGamesWithoutScoresModel,
+  getTopFiveGamesModel,
+  getLowestFiveGamesModel,
 };

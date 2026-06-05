@@ -13,6 +13,8 @@ const {
   getTotalGameScoreController,
   getGamesByPlatformController,
   getGamesWithoutScoresController,
+  getTopFiveGamesController,
+  getLowestFiveGamesController,
 } = require("../controllers/gamesController");
 
 router.get("/", getGamesController);
@@ -22,6 +24,8 @@ router.get("/nogames", getDevelopersWithNoGamesController);
 router.get("/charactercensus", getTotalCharacterCensusController);
 router.get("/totalscores", getTotalGameScoreController);
 router.get("/noscores", getGamesWithoutScoresController);
+router.get("/top5", getTopFiveGamesController);
+router.get("/lowest5", getLowestFiveGamesController);
 
 router.post("/", createGamesController);
 router.post("/platform", getGamesByPlatformController);

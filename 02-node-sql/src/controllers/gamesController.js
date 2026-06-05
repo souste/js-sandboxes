@@ -10,6 +10,8 @@ const {
   getTotalGameScoreModel,
   getGamesByPlatformModel,
   getGamesWithoutScoresModel,
+  getTopFiveGamesModel,
+  getLowestFiveGamesModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -267,6 +269,42 @@ const getGamesWithoutScoresController = async (req, res) => {
   }
 };
 
+const getTopFiveGamesController = async (req, res) => {
+  try {
+    const result = await getTopFiveGamesModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Top 5 scoring games retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const getLowestFiveGamesController = async (req, res) => {
+  try {
+    const result = await getLowestFiveGamesModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Lowest 5 games retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -279,4 +317,6 @@ module.exports = {
   getTotalGameScoreController,
   getGamesByPlatformController,
   getGamesWithoutScoresController,
+  getTopFiveGamesController,
+  getLowestFiveGamesController,
 };
