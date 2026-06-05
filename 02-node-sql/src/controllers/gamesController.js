@@ -5,6 +5,8 @@ const {
   deleteGamesModel,
   getGamesByDevelopersModel,
   getDevelopersGamesAndHeroesModel,
+  getDevelopersWithNoGamesModel,
+  getTotalCharacterCensusModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -146,6 +148,58 @@ const getDevelopersGamesAndHeroesController = async (req, res) => {
   }
 };
 
+const getDevelopersWithNoGamesController = async (req, res) => {
+  try {
+    const result = await getDevelopersWithNoGamesModel();
+
+    if (!result) {
+      throw new Error("Invalid response from the database");
+    }
+
+    if (result.length === 0) {
+      return res.status(200).json({
+        success: true,
+        data: [],
+        message: "There are no developers without games",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Developers with no games retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const getTotalCharacterCensusController = async (req, res) => {
+  try {
+    const result = await getTotalCharacterCensusModel();
+
+    if (!result) {
+      throw new Error("Invalid response from the database");
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Character census retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -153,4 +207,6 @@ module.exports = {
   deleteGamesController,
   getGamesByDevelopersController,
   getDevelopersGamesAndHeroesController,
+  getDevelopersWithNoGamesController,
+  getTotalCharacterCensusController,
 };

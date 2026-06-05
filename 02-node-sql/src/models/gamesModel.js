@@ -56,6 +56,35 @@ async function getDevelopersGamesAndHeroesModel() {
   return result.rows;
 }
 
+async function getDevelopersWithNoGamesModel() {
+  const result = await pool.query(
+    `SELECT d.name AS developer_name
+     FROM developers d
+     LEFT JOIN games g
+     ON d.id = g.developer_id
+     WhERE g.developer_id IS NULL`,
+  );
+  return result.rows;
+}
+
+async function getTotalCharacterCensusModel() {
+  const result = await pool.query(
+    `SELECT g.title, 
+     s.metascore, 
+     s.userscore, 
+     JSON_AGG(DISTINCT h.name) FILTER (WHERE h.name IS NOT NULL) AS heros, 
+     JSON_AGG(DISTINCT v.name) FILTER (WHERE v.name IS NOT NULL) AS villains
+     FROM games g
+     LEFT JOIN scores s ON g.id = s.game_id
+     LEFT JOIN heroes h ON g.id = h.game_id
+     LEFT JOIN villains v ON g.id = v.game_id
+     GROUP BY g.id, g.title, s.metascore, s.userscore
+     
+     `,
+  );
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -63,4 +92,6 @@ module.exports = {
   deleteGamesModel,
   getGamesByDevelopersModel,
   getDevelopersGamesAndHeroesModel,
+  getDevelopersWithNoGamesModel,
+  getTotalCharacterCensusModel,
 };
