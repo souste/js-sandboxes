@@ -146,6 +146,20 @@ async function getLowestFiveGamesModel() {
   return result.rows;
 }
 
+async function getPlatformRosterModel() {
+  const result = await pool.query(
+    `SELECT p.name, JSON_AGG(g.title) AS games_list, ROUND(AVG(s.metascore + (s.userscore * 10) ) /2) AS avg_platform_score
+     FROM game_platforms gp
+     JOIN platforms p ON gp.platform_id = p.id
+     JOIN games g ON gp.game_id = g.id
+     JOIN scores s ON g.id = s.game_id
+     GROUP BY p.name
+     ORDER BY avg_platform_score DESC
+    `,
+  );
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -160,4 +174,5 @@ module.exports = {
   getGamesWithoutScoresModel,
   getTopFiveGamesModel,
   getLowestFiveGamesModel,
+  getPlatformRosterModel,
 };
