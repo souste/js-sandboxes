@@ -13,6 +13,7 @@ const {
   getTopFiveGamesModel,
   getLowestFiveGamesModel,
   getPlatformRosterModel,
+  getHighScoreFilterModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -324,6 +325,24 @@ const getPlatformRosterController = async (req, res) => {
   }
 };
 
+const getHighScoreFilterController = async (req, res) => {
+  try {
+    const result = await getHighScoreFilterModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "High scoring games retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -339,4 +358,5 @@ module.exports = {
   getTopFiveGamesController,
   getLowestFiveGamesController,
   getPlatformRosterController,
+  getHighScoreFilterController,
 };

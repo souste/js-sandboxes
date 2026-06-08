@@ -160,6 +160,17 @@ async function getPlatformRosterModel() {
   return result.rows;
 }
 
+async function getHighScoreFilterModel() {
+  const result = await pool.query(
+    `SELECT g.title, s.metascore
+    FROM games g
+    JOIN scores s ON g.id = s.game_id
+    WHERE s.metascore > (SELECT AVG(metascore) FROM scores)`,
+  );
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -175,4 +186,5 @@ module.exports = {
   getTopFiveGamesModel,
   getLowestFiveGamesModel,
   getPlatformRosterModel,
+  getHighScoreFilterModel,
 };
