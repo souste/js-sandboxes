@@ -14,6 +14,7 @@ const {
   getLowestFiveGamesModel,
   getPlatformRosterModel,
   getHighScoreFilterModel,
+  getScoreDensityModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -343,6 +344,25 @@ const getHighScoreFilterController = async (req, res) => {
   }
 };
 
+const getScoreDensityController = async (req, res) => {
+  try {
+    const result = await getScoreDensityModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Score density counter successfully retrieved",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+getScoreDensityModel;
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -359,4 +379,5 @@ module.exports = {
   getLowestFiveGamesController,
   getPlatformRosterController,
   getHighScoreFilterController,
+  getScoreDensityController,
 };

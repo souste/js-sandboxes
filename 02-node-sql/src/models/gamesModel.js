@@ -171,6 +171,14 @@ async function getHighScoreFilterModel() {
   return result.rows;
 }
 
+async function getScoreDensityModel() {
+  const result =
+    await pool.query(`SELECT COUNT(metascore) AS score_count FROM scores
+    WHERE metascore IS NOT NULL`);
+
+  return parseInt(result.rows[0].score_count);
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -187,4 +195,5 @@ module.exports = {
   getLowestFiveGamesModel,
   getPlatformRosterModel,
   getHighScoreFilterModel,
+  getScoreDensityModel,
 };
