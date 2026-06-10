@@ -179,6 +179,30 @@ async function getScoreDensityModel() {
   return parseInt(result.rows[0].score_count);
 }
 
+async function getMissingScoresModel() {
+  const result = await pool.query(`
+    SELECT g.title
+    FROM games g
+    LEFT JOIN scores s ON g.id = s.game_id
+    WHERE s.game_id IS NULL`);
+
+  return result.rows;
+  console.log("poopy");
+}
+
+async function getPlatformWithMostGamesModel() {
+  const result = await pool.query(`
+    SELECT p.name, COUNT(gp.game_id) AS number_of_games
+    FROM platforms p
+    JOIN game_platforms gp ON p.id = gp.platform_id
+    GROUP BY p.name
+    ORDER BY number_of_games DESC
+    LIMIT 1;
+    `);
+
+  return result.rows[0] || null;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -196,4 +220,6 @@ module.exports = {
   getPlatformRosterModel,
   getHighScoreFilterModel,
   getScoreDensityModel,
+  getMissingScoresModel,
+  getPlatformWithMostGamesModel,
 };

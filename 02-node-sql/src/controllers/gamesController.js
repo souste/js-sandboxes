@@ -15,6 +15,8 @@ const {
   getPlatformRosterModel,
   getHighScoreFilterModel,
   getScoreDensityModel,
+  getMissingScoresModel,
+  getPlatformWithMostGamesModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -361,7 +363,54 @@ const getScoreDensityController = async (req, res) => {
     });
   }
 };
-getScoreDensityModel;
+
+const getMissingScoresController = async (req, res) => {
+  try {
+    const result = await getMissingScoresModel();
+
+    if (result.rows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "No game found with missing scores",
+      });
+    }
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Games without scores retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+const getPlatformWithMostGamesController = async (req, res) => {
+  try {
+    const result = await getPlatformWithMostGamesModel();
+
+    if (!result) {
+      return res
+        .status(404)
+        .json({ success: false, message: "No platform data found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Platform count retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
 
 module.exports = {
   getGamesController,
@@ -380,4 +429,6 @@ module.exports = {
   getPlatformRosterController,
   getHighScoreFilterController,
   getScoreDensityController,
+  getMissingScoresController,
+  getPlatformWithMostGamesController,
 };
