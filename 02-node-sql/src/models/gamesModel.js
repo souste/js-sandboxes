@@ -215,6 +215,20 @@ async function getPlatformCatalogueModel() {
   return result.rows;
 }
 
+async function getHighestScoreByPlatformModel() {
+  const result = await pool.query(`
+    SELECT p.name, MAX(s.metascore) AS highest_metascore
+    FROM platforms p
+    LEFT JOIN game_platforms gp ON p.id = gp.platform_id 
+    LEFT JOIN games g ON gp.game_id = g.id
+    LEFT JOIN scores s ON g.id = s.game_id
+    GROUP BY p.name
+    ORDER BY highest_metascore DESC
+    `);
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -235,4 +249,5 @@ module.exports = {
   getMissingScoresModel,
   getPlatformWithMostGamesModel,
   getPlatformCatalogueModel,
+  getHighestScoreByPlatformModel,
 };

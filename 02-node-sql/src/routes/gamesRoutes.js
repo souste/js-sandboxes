@@ -21,6 +21,7 @@ const {
   getMissingScoresController,
   getPlatformWithMostGamesController,
   getPlatformCatalogueController,
+  getHighestScoreByPlatformController,
 } = require("../controllers/gamesController");
 
 router.get("/", getGamesController);
@@ -38,6 +39,7 @@ router.get("/scoredensity", getScoreDensityController);
 router.get("/scoreless", getMissingScoresController);
 router.get("/platformcount", getPlatformWithMostGamesController);
 router.get("/platformcatalogue", getPlatformCatalogueController);
+router.get("/highestscores", getHighestScoreByPlatformController);
 
 router.post("/", createGamesController);
 router.post("/platform", getGamesByPlatformController);
