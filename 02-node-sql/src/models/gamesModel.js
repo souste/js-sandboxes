@@ -203,6 +203,18 @@ async function getPlatformWithMostGamesModel() {
   return result.rows[0] || null;
 }
 
+async function getPlatformCatalogueModel() {
+  const result = await pool.query(`
+    SELECT p.name, COUNT(gp.game_id) AS game_count
+    FROM platforms p
+    LEFT JOIN game_platforms gp ON p.id = gp.platform_id
+    GROUP BY p.name
+    ORDER BY game_count DESC
+    `);
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -222,4 +234,5 @@ module.exports = {
   getScoreDensityModel,
   getMissingScoresModel,
   getPlatformWithMostGamesModel,
+  getPlatformCatalogueModel,
 };

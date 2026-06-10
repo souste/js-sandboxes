@@ -17,6 +17,7 @@ const {
   getScoreDensityModel,
   getMissingScoresModel,
   getPlatformWithMostGamesModel,
+  getPlatformCatalogueModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -412,6 +413,31 @@ const getPlatformWithMostGamesController = async (req, res) => {
   }
 };
 
+const getPlatformCatalogueController = async (req, res) => {
+  try {
+    const result = await getPlatformCatalogueModel();
+
+    if (result.rows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Couldn't retrieve platform catalogue",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      date: result,
+      message: "Platform catalogue retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -431,4 +457,5 @@ module.exports = {
   getScoreDensityController,
   getMissingScoresController,
   getPlatformWithMostGamesController,
+  getPlatformCatalogueController,
 };
