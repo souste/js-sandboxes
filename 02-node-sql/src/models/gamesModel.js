@@ -229,6 +229,28 @@ async function getHighestScoreByPlatformModel() {
   return result.rows;
 }
 
+async function getFullGameDetailsModel() {
+  const result = await pool.query(`
+    SELECT g.title, 
+    d.name AS studio,
+    JSON_AGG(DISTINCT p.name) FILTER (WHERE p.name IS NOT NULL) AS platforms, 
+    JSON_AGG(DISTINCT h.name) FILTER (WHERE h.name IS NOT NULL) AS heroes, 
+    JSON_AGG(DISTINCT v.name) FILTER (WHERE v.name IS NOT NULL) AS villains,
+    s.metascore AS metascore, s.userscore AS userscore
+    FROM games g
+    LEFT JOIN game_platforms gp ON g.id = gp.game_id
+    LEFT JOIN platforms p ON gp.platform_id = p.id
+    LEFT JOIN developers d ON g.developer_id = d.id
+    LEFT JOIN heroes h ON g.id = h.game_id
+    LEFT JOIN villains v ON g.id = v.game_id
+    LEFT JOIN scores s ON g.id = s.game_id
+
+    GROUP BY g.id, g.title, d.name, s.metascore, s.userscore
+    `);
+
+  return result.rows;
+}
+
 module.exports = {
   getGamesModel,
   createGamesModel,
@@ -250,4 +272,5 @@ module.exports = {
   getPlatformWithMostGamesModel,
   getPlatformCatalogueModel,
   getHighestScoreByPlatformModel,
+  getFullGameDetailsModel,
 };

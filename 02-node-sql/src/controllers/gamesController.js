@@ -19,6 +19,7 @@ const {
   getPlatformWithMostGamesModel,
   getPlatformCatalogueModel,
   getHighestScoreByPlatformModel,
+  getFullGameDetailsModel,
 } = require("../models/gamesModel");
 
 const getGamesController = async (req, res) => {
@@ -457,6 +458,24 @@ const getHighestScoreByPlatformController = async (req, res) => {
   }
 };
 
+const getFullGameDetailsController = async (req, res) => {
+  try {
+    const result = await getFullGameDetailsModel();
+
+    res.status(200).json({
+      success: true,
+      data: result,
+      message: "Full game details retrieved successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = {
   getGamesController,
   createGamesController,
@@ -478,4 +497,5 @@ module.exports = {
   getPlatformWithMostGamesController,
   getPlatformCatalogueController,
   getHighestScoreByPlatformController,
+  getFullGameDetailsController,
 };
