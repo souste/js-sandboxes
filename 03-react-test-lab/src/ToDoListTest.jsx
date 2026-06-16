@@ -44,6 +44,24 @@ export function ToDoListTest() {
     }));
   };
 
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const newTask = { ...values, id: Date.now(), completed: false };
+    setTasks((prev) => [...prev, newTask]);
+    setValues({ title: "", notes: "", deadline: "" });
+    setShowForm(false);
+  };
+
+  const handleDelete = (taskId) => {
+    const isConfirmed = window.confirm(
+      "Are you sure you want to delete this task?",
+    );
+
+    if (isConfirmed) {
+      setTasks((prev) => prev.filter((task) => task.id !== taskId));
+    }
+  };
+
   return (
     <div>
       <div>
@@ -52,12 +70,13 @@ export function ToDoListTest() {
             <strong>Task: {task.title}</strong>
             <p>Notes: {task.notes}</p>
             <p>Deadline: {task.deadline}</p>
+            <button onClick={() => handleDelete(task.id)}>Delete</button>
           </div>
         ))}
       </div>
       <button onClick={() => setShowForm(!showForm)}>Create Task</button>
       {showForm && (
-        <form>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
             name="title"
