@@ -35,6 +35,12 @@ export function ToDoListTest() {
   const [tasks, setTasks] = useState(initialTasks);
   const [values, setValues] = useState({ title: "", notes: "", deadline: "" });
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState(null);
+  const [editValues, setEditValues] = useState({
+    title: "",
+    notes: "",
+    deadline: "",
+  });
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -70,6 +76,30 @@ export function ToDoListTest() {
     );
   };
 
+  const handleShowForm = (task) => {
+    setEditingId(task.id);
+    setEditValues({
+      title: task.title,
+      notes: task.notes,
+      deadline: task.deadline,
+    });
+  };
+
+  const handleEditChange = (event) => {
+    const { name, value } = event.target;
+    setEditValues((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleEditSubmit = (event, taskId) => {
+    event.preventDefault();
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, ...editValues } : task,
+      ),
+    );
+    setEditingId(null);
+  };
+
   return (
     <div>
       <div>
@@ -81,7 +111,37 @@ export function ToDoListTest() {
             <button onClick={() => handleCompletedToggle(task.id)}>
               {task.completed ? "Incomplete" : "Mark Complete"}
             </button>
+            <button onClick={() => handleShowForm(task)}>Edit</button>
             <button onClick={() => handleDelete(task.id)}>Delete</button>
+            {editingId === task.id && (
+              <form onSubmit={(event) => handleEditSubmit(event, task.id)}>
+                <input
+                  type="text"
+                  name="title"
+                  value={editValues.title}
+                  onChange={handleEditChange}
+                  placeholder="Enter title"
+                />
+                <input
+                  type="text"
+                  name="notes"
+                  value={editValues.notes}
+                  onChange={handleEditChange}
+                  placeholder="Enter notes"
+                />
+                <input
+                  type="text"
+                  name="deadline"
+                  value={editValues.deadline}
+                  onChange={handleEditChange}
+                  placeholder="Enter deadline"
+                />
+                <button type="submit">Save Changes</button>
+                <button type="button" onClick={() => setEditingId(null)}>
+                  Cancel
+                </button>
+              </form>
+            )}
           </div>
         ))}
       </div>
