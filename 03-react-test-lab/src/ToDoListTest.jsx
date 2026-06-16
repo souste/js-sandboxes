@@ -62,14 +62,25 @@ export function ToDoListTest() {
     }
   };
 
+  const handleCompletedToggle = (taskId) => {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === taskId ? { ...task, completed: !task.completed } : task,
+      ),
+    );
+  };
+
   return (
     <div>
       <div>
         {tasks.map((task) => (
-          <div key={task.id}>
+          <div key={task.id} style={{ opacity: task.completed ? 0.5 : 1 }}>
             <strong>Task: {task.title}</strong>
             <p>Notes: {task.notes}</p>
             <p>Deadline: {task.deadline}</p>
+            <button onClick={() => handleCompletedToggle(task.id)}>
+              {task.completed ? "Incomplete" : "Mark Complete"}
+            </button>
             <button onClick={() => handleDelete(task.id)}>Delete</button>
           </div>
         ))}
