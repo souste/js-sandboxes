@@ -63,6 +63,7 @@ export const ProductFilter = () => {
   const [products] = useState(initialProducts);
   const [searchValue, setSearchValue] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
+  const [sortBy, setSortBy] = useState("none");
 
   const handleChange = (event) => {
     setSearchValue(event.target.value);
@@ -75,7 +76,12 @@ export const ProductFilter = () => {
     .filter(
       (product) =>
         selectedCategory === "All" || product.category === selectedCategory,
-    );
+    )
+    .sort((a, b) => {
+      if (sortBy === "price-low") return a.price - b.price;
+      if (sortBy === "price-high") return b.price - a.price;
+      if (sortBy === "rating") return b.rating - a.rating;
+    });
 
   const handleSelect = (event) => {
     setSelectedCategory(event.target.value);
@@ -91,6 +97,12 @@ export const ProductFilter = () => {
         <option value={"Electronics"}>Electronics</option>
         <option value="Furniture">Furniture</option>
         <option value="Fitness">Fitness</option>
+      </select>
+      <select onChange={(e) => setSortBy(e.target.value)}>
+        <option value="none">Default</option>
+        <option value="price-low">Price: Low to High</option>
+        <option value="price-high">Price: High to Low</option>
+        <option value="rating">Rating</option>
       </select>
       <div>
         {displayedProducts.map((product) => (
