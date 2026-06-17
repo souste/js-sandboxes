@@ -60,21 +60,38 @@ const initialProducts = [
 ];
 
 export const ProductFilter = () => {
-  const [products, setProducts] = useState(initialProducts);
+  const [products] = useState(initialProducts);
   const [searchValue, setSearchValue] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   const handleChange = (event) => {
     setSearchValue(event.target.value);
   };
 
-  const displayedProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchValue.toLowerCase()),
-  );
+  const displayedProducts = products
+    .filter((product) =>
+      product.title.toLowerCase().includes(searchValue.toLowerCase()),
+    )
+    .filter(
+      (product) =>
+        selectedCategory === "All" || product.category === selectedCategory,
+    );
+
+  const handleSelect = (event) => {
+    setSelectedCategory(event.target.value);
+  };
+
   return (
     <div>
       <form>
         <input type="text" name="search" onChange={handleChange} />
       </form>
+      <select onChange={handleSelect}>
+        <option value={"All"}>All</option>
+        <option value={"Electronics"}>Electronics</option>
+        <option value="Furniture">Furniture</option>
+        <option value="Fitness">Fitness</option>
+      </select>
       <div>
         {displayedProducts.map((product) => (
           <div key={product.id}>
