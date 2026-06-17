@@ -65,10 +65,6 @@ export const ProductFilter = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [sortBy, setSortBy] = useState("none");
 
-  const handleChange = (event) => {
-    setSearchValue(event.target.value);
-  };
-
   const displayedProducts = products
     .filter((product) =>
       product.title.toLowerCase().includes(searchValue.toLowerCase()),
@@ -83,16 +79,16 @@ export const ProductFilter = () => {
       if (sortBy === "rating") return b.rating - a.rating;
     });
 
-  const handleSelect = (event) => {
-    setSelectedCategory(event.target.value);
-  };
-
   return (
     <div>
       <form>
-        <input type="text" name="search" onChange={handleChange} />
+        <input
+          type="text"
+          name="search"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
       </form>
-      <select onChange={handleSelect}>
+      <select onChange={(e) => setSelectedCategory(e.target.value)}>
         <option value={"All"}>All</option>
         <option value={"Electronics"}>Electronics</option>
         <option value="Furniture">Furniture</option>
