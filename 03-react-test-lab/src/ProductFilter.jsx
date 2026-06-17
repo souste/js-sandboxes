@@ -61,11 +61,23 @@ const initialProducts = [
 
 export const ProductFilter = () => {
   const [products, setProducts] = useState(initialProducts);
+  const [searchValue, setSearchValue] = useState("");
+
+  const handleChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+
+  const displayedProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchValue.toLowerCase()),
+  );
   return (
     <div>
+      <form>
+        <input type="text" name="search" onChange={handleChange} />
+      </form>
       <div>
-        {products.map((product) => (
-          <div>
+        {displayedProducts.map((product) => (
+          <div key={product.id}>
             <strong>{product.title}</strong>
             <p>{product.price}</p>
             <p>{product.category}</p>
