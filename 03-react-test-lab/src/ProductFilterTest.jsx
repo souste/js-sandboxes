@@ -62,10 +62,16 @@ const FRESH_PRODUCTS = [
 export const ProductFilterTest = () => {
   const [products] = useState(FRESH_PRODUCTS);
   const [searchValue, setSearchValue] = useState("");
+  const [selectCategory, setSelectCategory] = useState("All");
 
-  const filteredProducts = products.filter((product) =>
-    product.title.toLowerCase().includes(searchValue.toLowerCase()),
-  );
+  const filteredProducts = products
+    .filter((product) =>
+      product.title.toLowerCase().includes(searchValue.toLowerCase()),
+    )
+    .filter(
+      (product) =>
+        selectCategory === "All" || product.category === selectCategory,
+    );
 
   return (
     <div>
@@ -75,6 +81,12 @@ export const ProductFilterTest = () => {
         placeholder="Search for any product"
         onChange={(e) => setSearchValue(e.target.value)}
       />
+      <select onChange={(e) => setSelectCategory(e.target.value)}>
+        <option value="All">All</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Fitness">Fitness</option>
+        <option value="Furniture">Furniture</option>
+      </select>
       <div>
         {filteredProducts.map((product) => (
           <div key={product.id}>
