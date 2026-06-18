@@ -63,6 +63,7 @@ export const ProductFilterTest = () => {
   const [products] = useState(FRESH_PRODUCTS);
   const [searchValue, setSearchValue] = useState("");
   const [selectCategory, setSelectCategory] = useState("All");
+  const [sortProduct, setSortProduct] = useState("none");
 
   const filteredProducts = products
     .filter((product) =>
@@ -71,7 +72,13 @@ export const ProductFilterTest = () => {
     .filter(
       (product) =>
         selectCategory === "All" || product.category === selectCategory,
-    );
+    )
+    .sort((a, b) => {
+      if (sortProduct === "highestPrice") return b.price - a.price;
+      if (sortProduct === "lowestPrice") return a.price - b.price;
+      if (sortProduct === "ratings") return b.rating - a.rating;
+      return 0;
+    });
 
   return (
     <div>
@@ -86,6 +93,12 @@ export const ProductFilterTest = () => {
         <option value="Electronics">Electronics</option>
         <option value="Fitness">Fitness</option>
         <option value="Furniture">Furniture</option>
+      </select>
+      <select onChange={(e) => setSortProduct(e.target.value)}>
+        <option value="none">None</option>
+        <option value="highestPrice">Price: Highest to Lowest</option>
+        <option value="lowestPrice">Price: Lowest to Highest</option>
+        <option value="ratings">Ratings: Highest to Lowest</option>
       </select>
       <div>
         {filteredProducts.map((product) => (
