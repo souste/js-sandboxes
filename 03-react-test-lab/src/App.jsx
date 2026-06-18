@@ -7,7 +7,6 @@ import { ProductFilterTest } from "./ProductFilterTest";
 function App() {
   return (
     <>
-      <div>React Test Lab</div>
       {/* <ToDoList /> */}
       {/* <ToDoListTest /> */}
       {/* <ProductFilter /> */}

@@ -81,28 +81,31 @@ export const ProductFilterTest = () => {
     });
 
   return (
-    <div>
-      <input
-        type="text"
-        name="product"
-        placeholder="Search for any product"
-        onChange={(e) => setSearchValue(e.target.value)}
-      />
-      <select onChange={(e) => setSelectCategory(e.target.value)}>
-        <option value="All">All</option>
-        <option value="Electronics">Electronics</option>
-        <option value="Fitness">Fitness</option>
-        <option value="Furniture">Furniture</option>
-      </select>
-      <select onChange={(e) => setSortProduct(e.target.value)}>
-        <option value="none">None</option>
-        <option value="highestPrice">Price: Highest to Lowest</option>
-        <option value="lowestPrice">Price: Lowest to Highest</option>
-        <option value="ratings">Ratings: Highest to Lowest</option>
-      </select>
-      <div>
+    <div className="product-container">
+      <h1 className="title">Product Filter Test Repo</h1>
+      <div className="controls-bar">
+        <input
+          type="text"
+          name="product"
+          placeholder="Search for any product"
+          onChange={(e) => setSearchValue(e.target.value)}
+        />
+        <select onChange={(e) => setSelectCategory(e.target.value)}>
+          <option value="All">All</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Fitness">Fitness</option>
+          <option value="Furniture">Furniture</option>
+        </select>
+        <select onChange={(e) => setSortProduct(e.target.value)}>
+          <option value="none">None</option>
+          <option value="highestPrice">Price: Highest to Lowest</option>
+          <option value="lowestPrice">Price: Lowest to Highest</option>
+          <option value="ratings">Ratings: Highest to Lowest</option>
+        </select>
+      </div>
+      <div className="product-grid">
         {filteredProducts.map((product) => (
-          <div key={product.id}>
+          <div key={product.id} className="product-card">
             <strong>{product.title}</strong>
             <p>Category: {product.category}</p>
             <p>Price £{product.price}</p>
