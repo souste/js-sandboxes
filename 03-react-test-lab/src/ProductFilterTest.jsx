@@ -61,15 +61,27 @@ const FRESH_PRODUCTS = [
 
 export const ProductFilterTest = () => {
   const [products] = useState(FRESH_PRODUCTS);
+  const [searchValue, setSearchValue] = useState("");
+
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchValue.toLowerCase()),
+  );
+
   return (
     <div>
+      <input
+        type="text"
+        name="product"
+        placeholder="Search for any product"
+        onChange={(e) => setSearchValue(e.target.value)}
+      />
       <div>
-        {products.map((product) => (
+        {filteredProducts.map((product) => (
           <div key={product.id}>
             <strong>{product.title}</strong>
-            <p>{[product.category]}</p>
-            <p>{product.price}</p>
-            <p>{product.rating}</p>
+            <p>Category: {product.category}</p>
+            <p>Price £{product.price}</p>
+            <p>Rating: {product.rating}</p>
           </div>
         ))}
       </div>
