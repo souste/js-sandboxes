@@ -1,7 +1,8 @@
 import "./App.css";
 // import { ToDoList } from "./ToDoList";
 // import { ToDoListTest } from "./ToDoListTest";
-import { ProductFilter } from "./ProductFilter";
+// import { ProductFilter } from "./ProductFilter";
+import { ProductFilterTest } from "./ProductFilterTest";
 
 function App() {
   return (
@@ -9,7 +10,8 @@ function App() {
       <div>React Test Lab</div>
       {/* <ToDoList /> */}
       {/* <ToDoListTest /> */}
-      <ProductFilter />
+      {/* <ProductFilter /> */}
+      <ProductFilterTest />
     </>
   );
 }
