@@ -70,7 +70,7 @@ const ShoppingCart = () => {
         </select>
       </div>
 
-      <div>
+      <div className="items-container">
         {filteredItems.map((item) => (
           <div key={item.id}>
             <strong>{item.name}</strong>
@@ -81,6 +81,16 @@ const ShoppingCart = () => {
             <p>{item.image}</p>
           </div>
         ))}
+      </div>
+      <div>
+        <strong>Order Summary:</strong>
+        <p>
+          Total Items: {items.reduce((acc, item) => acc + item.quantity, 0)}
+        </p>
+        <p>
+          Total Cost: £
+          {items.reduce((acc, item) => acc + item.quantity * item.price, 0)}
+        </p>
       </div>
     </div>
   );

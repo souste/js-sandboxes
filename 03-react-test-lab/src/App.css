@@ -1,4 +1,4 @@
-.product-container {
+/* .product-container {
   display: flex;
   flex-direction: column;
 }
@@ -73,4 +73,10 @@
 .product-card p:nth-of-type(2) {
   color: #16a34a;
   font-size: 15px;
+} */
+
+.items-container {
+  display: flex;
+  gap: 4;
+  border: 1px solid #ccc;
 }
