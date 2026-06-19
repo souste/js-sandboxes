@@ -41,16 +41,43 @@ const INITIAL_CART = [
 
 const ShoppingCart = () => {
   const [items, setItems] = useState(INITIAL_CART);
+  const [selectValue, setSelectValue] = useState("all");
+  const [selectCategory, setSelectCategory] = useState("all");
+
+  const filteredItems = items
+    .filter((item) => selectValue === "all" || item.id === selectValue)
+    .filter(
+      (item) => selectCategory === "all" || item.category === selectCategory,
+    );
+
   return (
     <div>
       <div>
-        {items.map((item) => (
-          <div>
+        <p>Filter by Item:</p>
+        <select onChange={(e) => setSelectValue(e.target.value)}>
+          <option value="all">All</option>
+          <option value="cart-item-1">Item 1: Keyboard</option>
+          <option value="cart-item-2">Item 2: Mousepad</option>
+          <option value="cart-item-3">Item 3: Adapter Hub</option>
+          <option value="cart-item-4">Item 4: Insulated Tumbler</option>
+        </select>
+        <p>Filter by Category</p>
+        <select onChange={(e) => setSelectCategory(e.target.value)}>
+          <option value="all">All</option>
+          <option value="Electronics">Electronics</option>
+          <option value="Office Supplies">Office Supplies</option>
+          <option value="Kitchenware">Kitchenware</option>
+        </select>
+      </div>
+
+      <div>
+        {filteredItems.map((item) => (
+          <div key={item.id}>
             <strong>{item.name}</strong>
-            <p>{item.category}</p>
-            <p>{item.price}</p>
-            <p>{item.quantity}</p>
-            <p>{item.stockLimit}</p>
+            <p>Categroy: {item.category}</p>
+            <p> Price: £{item.price}</p>
+            <p>Quantity: {item.quantity}</p>
+            <p>Stock Limit: {item.stockLimit}</p>
             <p>{item.image}</p>
           </div>
         ))}
