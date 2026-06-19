@@ -77,6 +77,6 @@
 
 .items-container {
   display: flex;
-  gap: 4;
+  gap: 12px;
   border: 1px solid #ccc;
 }

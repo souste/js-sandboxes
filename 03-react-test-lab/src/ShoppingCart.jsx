@@ -50,6 +50,26 @@ const ShoppingCart = () => {
       (item) => selectCategory === "all" || item.category === selectCategory,
     );
 
+  const handleIncrement = (id) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id && item.quantity < item.stockLimit
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
+    );
+  };
+
+  const handleDecrement = (id) => {
+    setItems((prevItems) =>
+      prevItems.map((item) =>
+        item.id === id && item.quantity > 1
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
+    );
+  };
+
   return (
     <div>
       <div>
@@ -73,12 +93,19 @@ const ShoppingCart = () => {
       <div className="items-container">
         {filteredItems.map((item) => (
           <div key={item.id}>
-            <strong>{item.name}</strong>
+            <strong>
+              {item.image}
+              {item.name}
+            </strong>
             <p>Categroy: {item.category}</p>
             <p> Price: £{item.price}</p>
-            <p>Quantity: {item.quantity}</p>
+            <p>
+              Quantity:
+              <button onClick={() => handleDecrement(item.id)}>-</button>
+              <strong>{item.quantity}</strong>
+              <button onClick={() => handleIncrement(item.id)}>+</button>
+            </p>
             <p>Stock Limit: {item.stockLimit}</p>
-            <p>{item.image}</p>
           </div>
         ))}
       </div>
@@ -89,7 +116,9 @@ const ShoppingCart = () => {
         </p>
         <p>
           Total Cost: £
-          {items.reduce((acc, item) => acc + item.quantity * item.price, 0)}
+          {items
+            .reduce((acc, item) => acc + item.quantity * item.price, 0)
+            .toFixed(2)}
         </p>
       </div>
     </div>
