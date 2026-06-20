@@ -72,33 +72,40 @@ export function ShoppingCartTest() {
   };
 
   return (
-    <div>
-      <div>
-        <p>Filter items: </p>
-        <select onChange={(e) => setItemSelectValue(e.target.value)}>
-          <option value="all">All</option>
-          <option value="cart-item-1">Wireless Controller</option>
-          <option value="cart-item-2">Keyboard Switch Set</option>
-          <option value="cart-item-3">Laptop Cooling Stand</option>
-          <option value="cart-item-4">Nylon USB-C Cable</option>
-        </select>
-        <p>Filter Categories</p>
-        <select onChange={(e) => setCategorySelectValue(e.target.value)}>
-          <option value="all">All</option>
-          <option value="Gaming Gears">Gaming Gears</option>
-          <option value="PC Components">PC Components</option>
-          <option value="Office Comfort">Office Comfort</option>
-          <option value="Accessories">Accessories</option>
-        </select>
+    <div className="card-dashboard">
+      <div className="filters-container">
+        <div className="filter-group">
+          <label>Filter items: </label>
+          <select onChange={(e) => setItemSelectValue(e.target.value)}>
+            <option value="all">All</option>
+            <option value="cart-item-1">Wireless Controller</option>
+            <option value="cart-item-2">Keyboard Switch Set</option>
+            <option value="cart-item-3">Laptop Cooling Stand</option>
+            <option value="cart-item-4">Nylon USB-C Cable</option>
+          </select>
+        </div>
+
+        <div className="filter-group">
+          <label>Filter Categories</label>
+          <select onChange={(e) => setCategorySelectValue(e.target.value)}>
+            <option value="all">All</option>
+            <option value="Gaming Gears">Gaming Gears</option>
+            <option value="PC Components">PC Components</option>
+            <option value="Office Comfort">Office Comfort</option>
+            <option value="Accessories">Accessories</option>
+          </select>
+        </div>
       </div>
-      <div>
+
+      <div className="items-grid">
         {filteredItems.map((item) => (
-          <div key={item.id}>
+          <div key={item.id} className="item-card">
+            <span className="item-emoji">{item.image}</span>
             <strong>{item.name}</strong>
             <p>Category: {item.category}</p>
             <p>Price: £{item.price}</p>
             <p>Stock Limit: {item.stockLimit}</p>
-            <p>
+            <div className="quantity-controls">
               Quantity:
               <button onClick={() => handleQuantityDecrement(item.id)}>
                 -
@@ -107,11 +114,12 @@ export function ShoppingCartTest() {
               <button onClick={() => handleQuantityIncrement(item.id)}>
                 +
               </button>
-            </p>
+            </div>
           </div>
         ))}
       </div>
-      <div>
+
+      <div className="order-summary">
         <strong>Order totals</strong>
         <p>
           Item Total:
