@@ -82,6 +82,19 @@ export function ShoppingCartTest() {
           </div>
         ))}
       </div>
+      <div>
+        <strong>Order totals</strong>
+        <p>
+          Item Total:
+          <strong>{items.reduce((acc, item) => acc + item.quantity, 0)}</strong>
+        </p>
+        <p>
+          Price Total £
+          <strong>
+            {items.reduce((acc, item) => acc + item.quantity * item.price, 0)}
+          </strong>
+        </p>
+      </div>
     </div>
   );
 }
