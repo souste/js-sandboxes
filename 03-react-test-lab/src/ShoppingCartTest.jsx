@@ -51,6 +51,26 @@ export function ShoppingCartTest() {
         categorySelectValue === "all" || item.category === categorySelectValue,
     );
 
+  const handleQuantityDecrement = (id) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id && item.quantity > 0
+          ? { ...item, quantity: item.quantity - 1 }
+          : item,
+      ),
+    );
+  };
+
+  const handleQuantityIncrement = (id) => {
+    setItems((prev) =>
+      prev.map((item) =>
+        item.id === id && item.quantity < item.stockLimit
+          ? { ...item, quantity: item.quantity + 1 }
+          : item,
+      ),
+    );
+  };
+
   return (
     <div>
       <div>
@@ -77,8 +97,17 @@ export function ShoppingCartTest() {
             <strong>{item.name}</strong>
             <p>Category: {item.category}</p>
             <p>Price: £{item.price}</p>
-            <p>Quantity: {item.quantity}</p>
             <p>Stock Limit: {item.stockLimit}</p>
+            <p>
+              Quantity:
+              <button onClick={() => handleQuantityDecrement(item.id)}>
+                -
+              </button>
+              <strong>{item.quantity}</strong>
+              <button onClick={() => handleQuantityIncrement(item.id)}>
+                +
+              </button>
+            </p>
           </div>
         ))}
       </div>
@@ -91,7 +120,9 @@ export function ShoppingCartTest() {
         <p>
           Price Total £
           <strong>
-            {items.reduce((acc, item) => acc + item.quantity * item.price, 0)}
+            {items
+              .reduce((acc, item) => acc + item.quantity * item.price, 0)
+              .toFixed(2)}
           </strong>
         </p>
       </div>
