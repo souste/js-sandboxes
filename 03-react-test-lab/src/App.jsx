@@ -3,7 +3,8 @@ import "./App.css";
 // import { ToDoListTest } from "./ToDoListTest";
 // import { ProductFilter } from "./ProductFilter";
 // import { ProductFilterTest } from "./ProductFilterTest";
-import ShoppingCart from "./ShoppingCart";
+// import ShoppingCart from "./ShoppingCart";
+import { ShoppingCartTest } from "./ShoppingCartTest";
 
 function App() {
   return (
@@ -12,7 +13,8 @@ function App() {
       {/* <ToDoListTest /> */}
       {/* <ProductFilter /> */}
       {/* <ProductFilterTest /> */}
-      <ShoppingCart />
+      {/* <ShoppingCart /> */}
+      <ShoppingCartTest />
     </>
   );
 }
