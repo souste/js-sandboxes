@@ -151,3 +151,15 @@
   flex-direction: column;
   width: 400px;
 }
+
+.success-page-container {
+  color: "green";
+  margin-bottom: 20px;
+}
+
+.errors {
+  color: red;
+  margin: 4px 0;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
