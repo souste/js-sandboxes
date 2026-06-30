@@ -111,7 +111,16 @@ export const FormsPlaygroundTest = () => {
         <button type="button" onClick={() => setShowPassword(!showPassword)}>
           See Password
         </button>
-        <button>Submit</button>
+        <button
+          disabled={
+            !formValues.firstname.trim() ||
+            !formValues.surname.trim() ||
+            !formValues.email.trim() ||
+            !formValues.password.trim()
+          }
+        >
+          Submit
+        </button>
       </form>
     </div>
   );
