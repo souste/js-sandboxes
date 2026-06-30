@@ -7,6 +7,7 @@ export const FormsPlaygroundTest = () => {
     email: "",
     password: "",
   });
+  const [successPage, setSuccessPage] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -14,11 +15,25 @@ export const FormsPlaygroundTest = () => {
     setFormValues((prev) => ({ ...prev, [name]: value }));
   };
 
-  console.log(formValues);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSuccessPage(true);
+  };
 
   return (
     <div>
-      <form className="form-container">
+      {successPage && (
+        <div>
+          <p>Signup Successful. Here are your details:</p>
+          <p>
+            Name: {formValues.firstname} {formValues.surname}
+          </p>
+          <p>Email: {formValues.email}</p>
+          <p>Password: ********</p>
+        </div>
+      )}
+
+      <form onSubmit={handleSubmit} className="form-container">
         <label>Firstname:</label>
         <input
           type="text"
@@ -51,6 +66,7 @@ export const FormsPlaygroundTest = () => {
           onChange={handleChange}
           placeholder="********"
         />
+        <button>Submit</button>
       </form>
     </div>
   );
