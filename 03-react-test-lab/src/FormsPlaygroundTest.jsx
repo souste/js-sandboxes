@@ -9,6 +9,7 @@ export const FormsPlaygroundTest = () => {
   });
   const [successPage, setSuccessPage] = useState(false);
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -55,6 +56,8 @@ export const FormsPlaygroundTest = () => {
     }
   };
 
+  const handlePasswordToggle = () => {};
+
   return (
     <div>
       {successPage && (
@@ -99,12 +102,15 @@ export const FormsPlaygroundTest = () => {
         <label>Password:</label>
         {errors.password && <p className="errors">{errors.password}</p>}
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           name="password"
           value={formValues.password}
           onChange={handleChange}
           placeholder="********"
         />
+        <button type="button" onClick={() => setShowPassword(!showPassword)}>
+          See Password
+        </button>
         <button>Submit</button>
       </form>
     </div>
