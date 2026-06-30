@@ -5,7 +5,8 @@ import "./App.css";
 // import { ProductFilterTest } from "./ProductFilterTest";
 // import ShoppingCart from "./ShoppingCart";
 // import { ShoppingCartTest } from "./ShoppingCartTest";
-import { FormsPlayground } from "./FormsPlayground";
+// import { FormsPlayground } from "./FormsPlayground";
+import { FormsPlaygroundTest } from "./FormsPlaygroundTest";
 
 function App() {
   return (
@@ -16,7 +17,8 @@ function App() {
       {/* <ProductFilterTest /> */}
       {/* <ShoppingCart /> */}
       {/* <ShoppingCartTest /> */}
-      <FormsPlayground />
+      {/* <FormsPlayground /> */}
+      <FormsPlaygroundTest />
     </>
   );
 }

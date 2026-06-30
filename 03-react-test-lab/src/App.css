@@ -79,7 +79,7 @@
 
 /* Shopping Cart */
 
-.card-dashboard {
+/* .card-dashboard {
   max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
@@ -144,4 +144,10 @@
   padding: 20px;
   border-radius: 8px;
   border-left: 5px solid #0056b3;
+} */
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  width: 400px;
 }
