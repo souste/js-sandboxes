@@ -1,7 +1,7 @@
-// require("dotenv").config()
+require("dotenv").config();
 
 const express = require("express");
-// const pool = require("./db/pool")
+const pool = require("./db/pool");
 const app = express();
 app.use(express.json());
 
@@ -9,7 +9,10 @@ app.get("/", (req, res) =>
   res.json({ message: "Welcome to the Node Playground" }),
 );
 
-const PORT = 3000;
+const tasksRoutes = require("./routes/tasksRoutes");
+app.use("/tasks", tasksRoutes);
+
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, (error) => {
   if (error) {
