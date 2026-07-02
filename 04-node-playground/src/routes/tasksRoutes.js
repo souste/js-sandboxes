@@ -9,6 +9,10 @@ const {
   deleteTaskController,
 } = require("../controllers/tasksController");
 
+const { authMiddleware } = require("../middlewares/authMiddleware");
+
+router.use(authMiddleware);
+
 router.get("/", getTasksController);
 router.get("/:id", getTaskController);
 router.post("/", createTaskController);
