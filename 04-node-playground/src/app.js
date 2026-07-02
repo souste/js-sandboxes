@@ -10,7 +10,10 @@ app.get("/", (req, res) =>
 );
 
 const tasksRoutes = require("./routes/tasksRoutes");
+const authRoutes = require("./routes/authRoutes");
+
 app.use("/tasks", tasksRoutes);
+app.use("/auth", authRoutes);
 
 const PORT = process.env.PORT || 3000;
 

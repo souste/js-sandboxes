@@ -33,9 +33,7 @@ const signup = async (req, res) => {
 
     const token = jwt.sign(
       {
-        id: user.id,
-        username: user.username,
-        email: user.email,
+        safeUser,
       },
       secret,
       { expiresIn: "7d" },
@@ -55,6 +53,57 @@ const signup = async (req, res) => {
   }
 };
 
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and password are required",
+      });
+    }
+
+    const existingUser = await findUserByEmail(email);
+
+    if (!existingUser) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    const isMatch = await bcrypt.compare(password, existingUser.password);
+
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Invalid credentials",
+      });
+    }
+
+    const { password: _password, ...safeUser } = existingUser;
+
+    const secret = process.env.JWT_SECRET;
+    if (!secret) throw new Error("JWT_SECRET missing");
+
+    const token = jwt.sign({ safeUser }, secret, { expiresIn: "7d" });
+
+    return res.status(200).json({
+      success: true,
+      data: { user: safeUser, token },
+      message: "Login successful",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 module.exports = {
   signup,
+  login,
 };
