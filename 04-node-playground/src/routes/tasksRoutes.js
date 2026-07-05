@@ -9,9 +9,11 @@ const {
   deleteTaskController,
 } = require("../controllers/tasksController");
 
-const { authMiddleware } = require("../middlewares/authMiddleware");
+// const { authMiddleware } = require("../middlewares/authMiddleware");
+const { authMiddlewareTest } = require("../middlewares/authMiddlewareTest");
 
-router.use(authMiddleware);
+// router.use(authMiddleware);
+router.use(authMiddlewareTest);
 
 router.get("/", getTasksController);
 router.get("/:id", getTaskController);
