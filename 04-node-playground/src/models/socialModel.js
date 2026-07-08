@@ -1,13 +1,25 @@
 const pool = require("../db/pool");
 
-// async function getPostsAndCommentCountByUser(userId) {
-//   const result = await pool.query(`
-//     SELECT p.title, p.content, u.username, COUNT(c.id) AS comment_count FROM posts WHERE user_id = $1`, [
-//     userId,
-//   ]);
+async function getAllUsersModel() {
+  const result = await pool.query("SELECT * FROM users");
+  return result.rows;
+}
 
-//   return result.rows;
-// }
+async function getPostsAndCommentCountByUserModel(userId) {
+  const result = await pool.query(
+    `
+    SELECT u.username, p.id, p.title, p.content, COUNT(c.id) as comment_count 
+    FROM users u
+    JOIN posts p ON u.id = p.user_id
+    LEFT JOIN comments c ON p.id = c.post_id
+    WHERE u.id = $1
+    GROUP BY u.username, p.id, p.title, p.content
+    `,
+    [userId],
+  );
+
+  return result.rows;
+}
 
 // async function getCommentsByPost(postId) {
 //   const result = await pool.query(`SELECT * FROM comments WHERE post_id = $1`, [
@@ -45,6 +57,8 @@ async function createCommentByPostModel(content, postId, userId) {
 module.exports = {
   //   getPostsByUser,
   //   getCommentsByPost,
+  getAllUsersModel,
+  getPostsAndCommentCountByUserModel,
   getPostByIdModel,
   createPostModel,
   createCommentByPostModel,
