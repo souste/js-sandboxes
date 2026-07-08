@@ -2,6 +2,7 @@ const {
   getAllUsersModel,
   getPostsAndCommentCountByUserModel,
   getPostByIdModel,
+  getCommentsByPostModel,
   createPostModel,
   createCommentByPostModel,
 } = require("../models/socialModel");
@@ -37,6 +38,40 @@ const getPostsAndCommentCountByUserController = async (req, res) => {
       success: true,
       data: filteredResult,
       message: `Posts by user ${userId} successfully retrieved`,
+    });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const getCommentsByPostController = async (req, res) => {
+  try {
+    const postId = req.params.postId;
+
+    const result = await getCommentsByPostModel(postId);
+
+    if (result.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: `No post found with id ${postId}`,
+      });
+    }
+
+    const filteredResult = {
+      id: result[0].id,
+      title: result[0].title,
+      content: result[0].content,
+      comments: result.map(({ id, title, content, ...comment }) => comment),
+    };
+
+    res.status(200).json({
+      success: true,
+      data: filteredResult,
+      message: `Comments for post ${postId} retrieved successfully`,
     });
   } catch (err) {
     console.error(err);
@@ -115,6 +150,7 @@ const createCommentByPostController = async (req, res) => {
 module.exports = {
   getAllUsersController,
   getPostsAndCommentCountByUserController,
+  getCommentsByPostController,
   createPostController,
   createCommentByPostController,
 };

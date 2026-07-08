@@ -21,13 +21,22 @@ async function getPostsAndCommentCountByUserModel(userId) {
   return result.rows;
 }
 
-// async function getCommentsByPost(postId) {
-//   const result = await pool.query(`SELECT * FROM comments WHERE post_id = $1`, [
-//     postId,
-//   ]);
+async function getCommentsByPostModel(postId) {
+  const result = await pool.query(
+    `
+    SELECT p.id, p.title, p.content, c.id AS comment_id, c.content AS comment_content, u.username AS username
+    FROM posts p
+    JOIN comments c ON p.id = c.post_id
+    LEFT JOIN users u ON c.user_id = u.id
+    WHERE p.id = $1
+    
+    `,
 
-//   return result.rows;
-// }
+    [postId],
+  );
+
+  return result.rows;
+}
 
 async function getPostByIdModel(postId) {
   const result = await pool.query(`SELECT * FROM posts WHERE id = $1`, [
@@ -59,6 +68,7 @@ module.exports = {
   //   getCommentsByPost,
   getAllUsersModel,
   getPostsAndCommentCountByUserModel,
+  getCommentsByPostModel,
   getPostByIdModel,
   createPostModel,
   createCommentByPostModel,
