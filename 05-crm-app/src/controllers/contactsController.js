@@ -2,6 +2,8 @@ const {
   getContactsModel,
   getContactModel,
   createContactModel,
+  updateContactModel,
+  deleteContactModel,
 } = require("../models/contactsModel");
 
 const getContactsController = async (req, res) => {
@@ -89,8 +91,78 @@ const createContactController = async (req, res) => {
   }
 };
 
+const updateContactController = async (req, res) => {
+  try {
+    const { firstName, surname, email, companyId } = req.body;
+    const { id } = req.params;
+
+    if (!firstName || !surname || !email) {
+      return res.status(400).json({
+        success: false,
+        message: "All fields must be complete",
+      });
+    }
+
+    const updatedContact = await updateContactModel(
+      firstName,
+      surname,
+      email,
+      companyId,
+      id,
+    );
+
+    if (!updatedContact) {
+      return res.status(404).json({
+        success: false,
+        message: `Unable to find contact with id ${id}`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: updatedContact,
+      message: "Contact updated successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+const deleteContactController = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    const deleted = await deleteContactModel(id);
+
+    if (!deleted) {
+      return res.status(404).json({
+        success: false,
+        message: `Unable to find contact with id ${id}`,
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: deleted,
+      message: "Contact deleted successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 module.exports = {
   getContactsController,
   getContactController,
   createContactController,
+  updateContactController,
+  deleteContactController,
 };
