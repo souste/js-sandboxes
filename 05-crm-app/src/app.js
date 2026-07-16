@@ -8,6 +8,10 @@ app.use(express.json());
 
 app.get("/", (req, res) => res.json({ message: "Welcome to the CRM app" }));
 
+const contactsRoutes = require("./routes/contactsRoutes");
+
+app.use("/contacts", contactsRoutes);
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, (error) => {
