@@ -11,6 +11,7 @@ CREATE TABLE contacts (
     first_name VARCHAR(100) NOT NULL,
     surname VARCHAR(100) NOT NULL,
     email VARCHAR(255) UNIQUE NOT NULL,
+    phone VARCHAR(100),
     company_id INTEGER REFERENCES companies(id) ON DELETE SET NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW() 

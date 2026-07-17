@@ -38,4 +38,26 @@ const syncPreviewController = async (req, res) => {
   }
 };
 
-module.exports = { getDataController, syncPreviewController };
+const syncContactsController = async (req, res) => {
+  try {
+    const result = await syncUsers(10);
+
+    res.status(100).json({
+      success: true,
+      data: result,
+      message: "Users synced successfully",
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+module.exports = {
+  getDataController,
+  syncPreviewController,
+  syncContactsController,
+};

@@ -24,19 +24,25 @@ async function getContactModel(id) {
   return result.rows[0];
 }
 
-async function createContactModel(firstName, surname, email, companyId) {
+async function createContactModel(contact) {
   const result = await pool.query(
-    `   WITH new_contact AS (
-            INSERT INTO contacts (first_name, surname, email, company_id) VALUES ($1, $2, $3, $4)
-            RETURNING *
+    `
+    WITH new_contact AS (
+     INSERT INTO contacts (first_name, surname, email, phone, company_id) VALUES ($1, $2, $3, $4, $5)
+     RETURNING *
     )
-        SELECT
-        c.id, c.first_name, c.surname, c.email, co.name AS company_name, co.industry
-        FROM new_contact c
-        LEFT JOIN companies co ON c.company_id = co.id
-       
-        `,
-    [firstName, surname, email, companyId],
+     SELECT
+     c.id, c.first_name, c.surname, c.email, c.phone, co.name AS company_name, co.industry
+     FROM new_contact c
+    LEFT JOIN companies co ON c.company_id = co.id
+    `,
+    [
+      contact.first_name,
+      contact.surname,
+      contact.email,
+      contact.phone,
+      contact.company_id,
+    ],
   );
   return result.rows[0];
 }
