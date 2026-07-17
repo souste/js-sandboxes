@@ -2,8 +2,12 @@ const { Router } = require("express");
 
 const router = Router();
 
-const { getDataController } = require("../controllers/syncController");
+const {
+  getDataController,
+  syncPreviewController,
+} = require("../controllers/syncController");
 
 router.get("/", getDataController);
+router.get("/contacts", syncPreviewController);
 
 module.exports = router;
