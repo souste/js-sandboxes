@@ -81,10 +81,22 @@ async function deleteContactModel(id) {
   return result.rows[0];
 }
 
+async function findContactByEmail(email) {
+  const result = await pool.query(
+    `
+    SELECT * FROM contacts WHERE email = $1
+    `,
+    [email],
+  );
+
+  return result.rows[0];
+}
+
 module.exports = {
   getContactsModel,
   getContactModel,
   createContactModel,
   updateContactModel,
   deleteContactModel,
+  findContactByEmail,
 };

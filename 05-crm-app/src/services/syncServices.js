@@ -1,5 +1,9 @@
 const { getUsers } = require("./randomUserApi");
-const { createContactModel } = require("../models/contactsModel");
+const {
+  createContactModel,
+  findContactByEmail,
+} = require("../models/contactsModel");
+const { isValidEmail } = require("../utils/validators");
 
 const syncUsers = async (num) => {
   console.log("Starting contact sync...");
@@ -25,11 +29,23 @@ const syncUsers = async (num) => {
   let rejected = 0;
 
   for (const contact of contacts) {
-    if (!contact.first_name || !contact.surname || !contact.email) {
-      console.log("Skipping contact - missing required fields");
+    if (
+      !contact.first_name ||
+      !contact.surname ||
+      !contact.email ||
+      !isValidEmail(contact.email)
+    ) {
+      console.log(`Skipping contact ${contact.email} - invalid data`);
       rejected++;
       continue;
     }
+    const alreadyExists = await findContactByEmail(contact.email);
+    if (alreadyExists) {
+      console.log(`User with email: ${contact.email} already exists`);
+      rejected++;
+      continue;
+    }
+
     await createContactModel(contact);
     imported++;
   }
@@ -40,7 +56,11 @@ const syncUsers = async (num) => {
     rejected,
   });
 
-  return contacts;
+  return {
+    received,
+    imported,
+    rejected,
+  };
 };
 
 module.exports = { syncUsers };

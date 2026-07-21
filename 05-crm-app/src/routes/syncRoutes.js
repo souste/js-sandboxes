@@ -5,12 +5,12 @@ const router = Router();
 const {
   getDataController,
   syncPreviewController,
-  syncContactsController,
+  syncUsersToContacts,
 } = require("../controllers/syncController");
 
 router.get("/", getDataController);
 router.get("/preview", syncPreviewController);
 
-router.post("/", syncContactsController);
+router.post("/", syncUsersToContacts);
 
 module.exports = router;

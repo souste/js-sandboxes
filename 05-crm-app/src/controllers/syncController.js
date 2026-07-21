@@ -27,7 +27,7 @@ const syncPreviewController = async (req, res) => {
     res.status(200).json({
       success: true,
       data: result,
-      message: "Api data retrieved successfully",
+      message: "Sync completed",
     });
   } catch (err) {
     console.error(err);
@@ -38,14 +38,14 @@ const syncPreviewController = async (req, res) => {
   }
 };
 
-const syncContactsController = async (req, res) => {
+const syncUsersToContacts = async (req, res) => {
   try {
     const result = await syncUsers(10);
 
-    res.status(100).json({
+    res.status(200).json({
       success: true,
       data: result,
-      message: "Users synced successfully",
+      message: "Sync completed",
     });
   } catch (err) {
     console.error(err);
@@ -59,5 +59,5 @@ const syncContactsController = async (req, res) => {
 module.exports = {
   getDataController,
   syncPreviewController,
-  syncContactsController,
+  syncUsersToContacts,
 };
