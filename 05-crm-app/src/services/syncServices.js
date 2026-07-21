@@ -2,7 +2,12 @@ const { getUsers } = require("./randomUserApi");
 const { createContactModel } = require("../models/contactsModel");
 
 const syncUsers = async (num) => {
+  console.log("Starting contact sync...");
+
   const result = await getUsers(num);
+
+  console.log(`Received ${result.results.length} users from API`);
+  const received = result.results.length;
 
   const users = result.results;
 
@@ -16,9 +21,24 @@ const syncUsers = async (num) => {
     };
   });
 
+  let imported = 0;
+  let rejected = 0;
+
   for (const contact of contacts) {
+    if (!contact.first_name || !contact.surname || !contact.email) {
+      console.log("Skipping contact - missing required fields");
+      rejected++;
+      continue;
+    }
     await createContactModel(contact);
+    imported++;
   }
+
+  console.log("Contact sync complete:", {
+    received,
+    imported,
+    rejected,
+  });
 
   return contacts;
 };
