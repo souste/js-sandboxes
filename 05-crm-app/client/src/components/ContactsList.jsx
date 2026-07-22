@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { getContacts } from "../api/contactsApi";
 import ContactCard from "./ContactCard";
+import SyncButton from "./SyncButton";
 
 function ContactsList() {
   const [contacts, setContacts] = useState([]);
@@ -25,11 +26,17 @@ function ContactsList() {
 
   return (
     <div>
-      {contacts.map((contact) => (
-        <div key={contact.id}>
-          <ContactCard contact={contact} />
-        </div>
-      ))}
+      <div>
+        <p>Total Contacts: {contacts.length}</p>
+        <SyncButton setContacts={setContacts} />
+      </div>
+      <div>
+        {contacts.map((contact) => (
+          <div key={contact.id}>
+            <ContactCard contact={contact} />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
