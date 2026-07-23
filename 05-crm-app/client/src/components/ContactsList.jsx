@@ -7,6 +7,7 @@ import SyncButton from "./SyncButton";
 function ContactsList() {
   const [contacts, setContacts] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchContacts = async () => {
@@ -23,6 +24,16 @@ function ContactsList() {
     fetchContacts();
   }, []);
 
+  const search = searchTerm.toLowerCase();
+
+  const displayedContacts = contacts.filter((contact) => {
+    return (
+      contact.first_name.toLowerCase().includes(search) ||
+      contact.surname.toLowerCase().includes(search) ||
+      contact.company_name?.toLowerCase().includes(search)
+    );
+  });
+
   if (loading) return <p>Loading Contacts</p>;
 
   return (
@@ -32,11 +43,24 @@ function ContactsList() {
         <SyncButton setContacts={setContacts} />
       </div>
       <div>
-        {contacts.map((contact) => (
-          <Link to={`/contacts/${contact.id}`} key={contact.id}>
-            <ContactCard contact={contact} />
-          </Link>
-        ))}
+        <input
+          type="text"
+          name="search"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          placeholder="Search for any contact"
+        />
+      </div>
+      <div>
+        {displayedContacts.length === 0 ? (
+          <p>No contacts found</p>
+        ) : (
+          displayedContacts.map((contact) => (
+            <Link to={`/contacts/${contact.id}`} key={contact.id}>
+              <ContactCard contact={contact} />
+            </Link>
+          ))
+        )}
       </div>
     </div>
   );
