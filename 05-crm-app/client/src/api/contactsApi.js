@@ -16,7 +16,7 @@ export async function getContacts() {
   }
 }
 
-export async function getContact() {
+export async function getContact(id) {
   try {
     const response = await fetch(`http://localhost:3000/contacts/${id}`, {
       method: "GET",

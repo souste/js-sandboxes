@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import { getContacts } from "../api/contactsApi";
 import ContactCard from "./ContactCard";
 import SyncButton from "./SyncButton";
@@ -32,9 +33,9 @@ function ContactsList() {
       </div>
       <div>
         {contacts.map((contact) => (
-          <div key={contact.id}>
+          <Link to={`/contacts/${contact.id}`} key={contact.id}>
             <ContactCard contact={contact} />
-          </div>
+          </Link>
         ))}
       </div>
     </div>
