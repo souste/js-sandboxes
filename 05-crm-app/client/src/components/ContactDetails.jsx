@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import { getContact } from "../api/contactsApi";
 
 function ContactDetails() {
@@ -16,7 +16,7 @@ function ContactDetails() {
         setContact(contact);
       } catch (err) {
         console.error("Failed to fetch contact", err);
-        setError("Unable to load Contact");
+        setError("Unable to load contact");
       } finally {
         setLoading(false);
       }
@@ -50,6 +50,7 @@ function ContactDetails() {
         <strong>Contact: </strong>
         {contact.email}
       </p>
+      <Link to="/">Back to contacts</Link>
     </div>
   );
 }
