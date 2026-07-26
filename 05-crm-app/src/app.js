@@ -10,9 +10,11 @@ app.get("/", (req, res) => res.json({ message: "Welcome to the CRM app" }));
 
 const contactsRoutes = require("./routes/contactsRoutes");
 const syncRoutes = require("./routes/syncRoutes");
+const webhookRouter = require("./routes/webhookRouter");
 
 app.use("/contacts", contactsRoutes);
 app.use("/sync", syncRoutes);
+app.use("/webhook", webhookRouter);
 
 const PORT = process.env.PORT || 3000;
 

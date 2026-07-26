@@ -14,7 +14,6 @@ function ContactsList() {
     const fetchContacts = async () => {
       try {
         const contacts = await getContacts();
-        console.log(contacts);
         setContacts(contacts);
       } catch (err) {
         console.error("Failed to fetch contacts", err);
